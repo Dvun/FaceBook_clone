@@ -1,0 +1,4 @@
+Dockerfile
+/.idea
+/.vscode
+/node_modules

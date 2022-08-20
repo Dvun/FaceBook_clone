@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    database: facebook_db
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://database:5432/facebook_db?createDatabaseIfNotExist=true
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
