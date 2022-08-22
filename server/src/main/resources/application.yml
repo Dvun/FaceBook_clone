@@ -1,13 +1,31 @@
+# Spring Boot configuration
 spring:
-  jpa:
-    database: facebook_db
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-      generate-ddl: true
+  profiles:
+    active: development
+  # Security configuration
+  security:
+    user:
+      name: user
+      password: user
+  # Database
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://database:5432/facebook_db?createDatabaseIfNotExist=true
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/facebook_db??useSSL=false&serverTimezone=UTC
     username: postgres
     password: postgres
-    driverClassName: org.postgresql.Driver
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: info
+    org.hibernate: debug
+# Server configuration
+server:
+  port: 8080 #set your port
