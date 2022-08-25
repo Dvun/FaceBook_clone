@@ -1,16 +1,15 @@
 package com.facebookclone.controller;
 
 
+import com.facebookclone.dto.auth.LoginDto;
+import com.facebookclone.dto.auth.LoginResponseDto;
 import com.facebookclone.dto.auth.RegisterDto;
-import com.facebookclone.entity.User;
 import com.facebookclone.service.auth.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.text.ParseException;
 
@@ -23,8 +22,18 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid RegisterDto dto) throws ParseException {
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDto dto) throws ParseException, MessagingException {
         return authService.register(dto);
+    }
+
+    @GetMapping("/activate/{token}")
+    public ResponseEntity<String> activate(@PathVariable String token) {
+        return authService.activate(token);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginDto dto) throws ParseException {
+        return authService.login(dto);
     }
 
 }

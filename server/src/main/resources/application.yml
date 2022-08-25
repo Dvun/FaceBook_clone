@@ -7,6 +7,9 @@ spring:
     user:
       name: user
       password: user
+    jwt:
+      secret: some-very-hard-secret-here
+      expireAt: 900000
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -29,3 +32,6 @@ logging:
 # Server configuration
 server:
   port: 8080 #set your port
+
+client:
+  base_url: http://localhost:3000

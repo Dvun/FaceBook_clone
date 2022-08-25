@@ -2,6 +2,7 @@ package com.facebookclone.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,13 +36,15 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests(auth -> auth
                         .antMatchers("/api/auth/register").permitAll()
+                        .antMatchers("/api/auth/login").permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/auth/activate/**").permitAll()
                 );
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration conf) throws Exception {
-        return conf.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
+        return auth.getAuthenticationManager();
     }
 
     @Bean
