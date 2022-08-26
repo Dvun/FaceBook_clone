@@ -4,11 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.facebookclone.exception.BadRequestException;
 import com.facebookclone.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -37,6 +41,6 @@ public class JwtUtils {
                 .withSubject("user details")
                 .withIssuer("Facebook-clone")
                 .build();
-        return jwt.verify(token).getClaim("username").toString();
+        return jwt.verify(token).getClaim("username").asString();
     }
 }

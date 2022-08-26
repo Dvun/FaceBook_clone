@@ -1,9 +1,13 @@
 package com.facebookclone.exception;
 
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class BadRequestException extends RuntimeException {
 
     private final String message;
