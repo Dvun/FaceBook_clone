@@ -5,6 +5,7 @@ import com.facebookclone.dto.auth.LoginDto;
 import com.facebookclone.dto.auth.LoginResponseDto;
 import com.facebookclone.dto.auth.RegisterDto;
 import com.facebookclone.service.auth.AuthService;
+import com.facebookclone.utils.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid RegisterDto dto) throws ParseException, MessagingException {
+    public ApiResponse register(@RequestBody @Valid RegisterDto dto) throws ParseException, MessagingException {
         return authService.register(dto);
     }
 
     @GetMapping("/activate/{token}")
-    public ResponseEntity<String> activate(@PathVariable String token) {
+    public ApiResponse activate(@PathVariable String token) {
         return authService.activate(token);
     }
 

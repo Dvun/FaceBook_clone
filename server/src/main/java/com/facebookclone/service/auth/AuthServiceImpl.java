@@ -1,19 +1,27 @@
 package com.facebookclone.service.auth;
 
-import com.facebookclone.dto.auth.*;
+import com.facebookclone.dto.auth.LoginDto;
+import com.facebookclone.dto.auth.LoginResponseDto;
+import com.facebookclone.dto.auth.RegisterDto;
 import com.facebookclone.dto.user.UserMapper;
-import com.facebookclone.entity.*;
-import com.facebookclone.exception.*;
-import com.facebookclone.repository.*;
+import com.facebookclone.entity.Role;
+import com.facebookclone.entity.User;
+import com.facebookclone.exception.BadRequestException;
+import com.facebookclone.exception.NotFoundException;
+import com.facebookclone.repository.RoleRepository;
+import com.facebookclone.repository.UserRepository;
 import com.facebookclone.security.jwt.JwtUtils;
 import com.facebookclone.service.email.EmailService;
-import com.facebookclone.utils.*;
+import com.facebookclone.utils.ApiResponse;
+import com.facebookclone.utils.EmailDetails;
+import com.facebookclone.utils.GenerateUsername;
+import com.facebookclone.utils.RandomTokenGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public ResponseEntity<String> register(RegisterDto dto) throws MessagingException {
+    public ApiResponse register(RegisterDto dto) throws MessagingException {
         if (userRepository.findByEmail(dto.getEmail()).isPresent())
             throw new BadRequestException(String.format("User with email %s already registered!", dto.getEmail()));
         User user = new User();
@@ -60,20 +68,23 @@ public class AuthServiceImpl implements AuthService {
         setTokenFormUrl(randomToken);
         String emailResponse = emailService.sendEmailWithAttachment(setDetails(dto.getEmail(), randomToken));
         userRepository.save(user);
-        return new ResponseEntity<>(emailResponse, HttpStatus.OK);
+        return new ApiResponse(null, emailResponse);
     }
 
     @Override
-    public ResponseEntity<String> activate(String urlWithToken) {
+    public ApiResponse activate(String urlWithToken) {
         User user = userRepository.findByEmail(randomTokenGenerator.getEmail()).orElseThrow();
         if (randomTokenGenerator.verifyTokenTime(urlWithToken, getTokenFormUrl())) {
+            if (user.getIsVerified()) {
+                return new ApiResponse(null, "Account already activated!");
+            }
             user.setIsVerified(true);
             userRepository.save(user);
-            return ResponseEntity.ok().body("Account is activated!");
+            return new ApiResponse(null, "Account is activated!");
         }
         user.getRoles().removeAll(user.getRoles());
         userRepository.delete(user);
-        return ResponseEntity.badRequest().body("Limited time (30 min) is expired! Register again and activate your account!");
+        return new ApiResponse(null, "Limited time (30 min) is expired! Register again and activate your account!");
     }
 
     @Override
@@ -124,9 +135,31 @@ public class AuthServiceImpl implements AuthService {
 
     private EmailDetails setDetails(String email, String token) {
         String url = String.format("%s/api/auth/activate/%s", clientUrl, token);
-        Context context = new Context();
-        context.setVariable("url", url);
-        String html = templateEngine.process("email/emailActivation", context);
+//        Context context = new Context();
+//        context.setVariable("url", url);
+        String html = String.format("<!doctype html>\n" +
+                "<html lang=en xmlns=http://www.w3.org/1999/xhtml xmlns:th=http://www.thymeleaf.org>\n" +
+                "<head>\n" +
+                "<meta charset=UTF-8>\n" +
+                "<meta name=viewport content=\"width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0\">\n" +
+                "<meta http-equiv=X-UA-Compatible content=\"ie=edge\">\n" +
+                "<title>Activation</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div style=margin-left:50px;margin-top:50px>\n" +
+                "<div><b>Welcome!</b></div>\n" +
+                "<br/>\n" +
+                "<div>Please activate your account using the link within 30 minutes!</div>\n" +
+                "<br/>\n" +
+                "<br/>\n" +
+                "<a href=%s style=\"width:200px;height:50px;background-color:blue;text-decoration:none;color:white;padding:13px 45px;border-radius:10px;fontSize:18\">\n" +
+                "Activate\n" +
+                "</a>\n" +
+                "<br/>\n" +
+                "<br/>\n" +
+                "</div>\n" +
+                "</body>\n" +
+                "</html>", url);
 
         return new EmailDetails(email, "Account activation", html, "");
     }

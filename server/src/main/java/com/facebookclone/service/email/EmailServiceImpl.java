@@ -3,10 +3,8 @@ package com.facebookclone.service.email;
 import com.facebookclone.utils.EmailDetails;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -46,9 +44,8 @@ public class EmailServiceImpl implements EmailService {
         helper.setTo(details.getRecipient());
         helper.setSubject(details.getSubject());
         helper.setText(details.getMsgBody(), true);
-
         javaMailSender.send(message);
-        return "Email successfully sent!";
+        return "Email successfully sent. Please register your account first!";
     }
 
 }
