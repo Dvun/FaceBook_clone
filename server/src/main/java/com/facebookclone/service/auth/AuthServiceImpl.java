@@ -25,8 +25,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import java.text.ParseException;
@@ -47,7 +45,6 @@ public class AuthServiceImpl implements AuthService {
     private final GenerateUsername generateUsername;
     private final RandomTokenGenerator randomTokenGenerator;
     private final EmailService emailService;
-    private final TemplateEngine templateEngine;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private String randomToken;
@@ -68,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         setTokenFormUrl(randomToken);
         String emailResponse = emailService.sendEmailWithAttachment(setDetails(dto.getEmail(), randomToken));
         userRepository.save(user);
-        return new ApiResponse(null, emailResponse);
+        return new ApiResponse(emailResponse);
     }
 
     @Override
@@ -76,15 +73,15 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(randomTokenGenerator.getEmail()).orElseThrow();
         if (randomTokenGenerator.verifyTokenTime(urlWithToken, getTokenFormUrl())) {
             if (user.getIsVerified()) {
-                return new ApiResponse(null, "Account already activated!");
+                throw new BadRequestException("Account already activated!");
             }
             user.setIsVerified(true);
             userRepository.save(user);
-            return new ApiResponse(null, "Account is activated!");
+            return new ApiResponse("Account is activated!");
         }
         user.getRoles().removeAll(user.getRoles());
         userRepository.delete(user);
-        return new ApiResponse(null, "Limited time (30 min) is expired! Register again and activate your account!");
+        throw new BadRequestException("Limited time (30 min) is expired! Register again and activate your account!");
     }
 
     @Override
@@ -135,8 +132,6 @@ public class AuthServiceImpl implements AuthService {
 
     private EmailDetails setDetails(String email, String token) {
         String url = String.format("%s/api/auth/activate/%s", clientUrl, token);
-//        Context context = new Context();
-//        context.setVariable("url", url);
         String html = String.format("<!doctype html>\n" +
                 "<html lang=en xmlns=http://www.w3.org/1999/xhtml xmlns:th=http://www.thymeleaf.org>\n" +
                 "<head>\n" +

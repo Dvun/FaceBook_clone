@@ -12,18 +12,15 @@ import java.util.Objects;
 public class ApiResponse {
 
     private Date timestamp;
-    private Objects content;
     private final String message;
 
 
     public ApiResponse(String message, Objects content) {
         this.timestamp = getTimestamp();
-        this.content = content;
         this.message = message;
     }
 
-    public ApiResponse(Objects content, String message) {
-        this.content = content;
+    public ApiResponse(String message) {
         this.message = message;
     }
 
