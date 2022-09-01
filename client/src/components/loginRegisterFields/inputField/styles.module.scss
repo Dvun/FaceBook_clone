@@ -1,0 +1,61 @@
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .inputDesktop {
+    outline: none;
+    border: 1px solid var(--bg-third);
+    background-color: var(--bg-primary);
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding-inline-start: 10px;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    font-size: 15px;
+    transition: all .1s ease-in;
+
+    &:focus {
+      border-color: var(--blue-color);
+    }
+  }
+
+  .inputMobile {
+    outline: none;
+    border: 1px solid var(--bg-third);
+    background-color: var(--bg-primary);
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    padding-inline-start: 10px;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    font-size: 15px;
+    position: relative;
+
+    &:focus {
+      border-color: var(--blue-color);
+    }
+  }
+
+  .error {
+    border-color: #b94a48;
+  }
+
+  svg {
+    position: absolute;
+    font-size: 20px;
+    right: 5px;
+    bottom: 20px;
+    top: 10px;
+    
+    @media (min-width: 850px) {
+      bottom: 25px;
+      top: 15px;
+    }
+  }
+}

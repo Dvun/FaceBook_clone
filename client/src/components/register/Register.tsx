@@ -3,19 +3,18 @@ import styles from './styles.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import InputField from '../fields/inputField/inputField';
+import InputField from '../loginRegisterFields/inputField/inputField';
 import { Gender, IRegisterData } from '../../interfaces/interfaces';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterValidation } from '../../validation/validation';
-import RadioField from '../fields/radioField/radioField';
-import SelectField from '../fields/selectField/selectField';
+import RadioField from '../loginRegisterFields/radioField/radioField';
+import SelectField from '../loginRegisterFields/selectField/selectField';
+import { useAppDispatch } from '../../hooks/storeHooks';
+import { registerModalCondition } from '../../store/registerModalSlice/registerModalSlice';
 
 
-interface Props {
-  setRegister: (bool: boolean) => void;
-}
-
-const Register: FC<Props> = memo(({setRegister}) => {
+const Register: FC = memo(() => {
+  const dispatch = useAppDispatch()
   const methods = useForm<IRegisterData>({
     mode: 'onChange',
     resolver: yupResolver(RegisterValidation),
@@ -39,7 +38,7 @@ const Register: FC<Props> = memo(({setRegister}) => {
     <div className="blur">
       <div className={styles.container}>
         <div className={styles.header}>
-          <FontAwesomeIcon icon={faXmark} onClick={() => setRegister(false)}/>
+          <FontAwesomeIcon icon={faXmark} onClick={() => dispatch(registerModalCondition(false))}/>
           <span>Sign Up</span>
           <span>It's quick and easy</span>
         </div>

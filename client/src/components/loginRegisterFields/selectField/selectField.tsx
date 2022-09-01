@@ -15,7 +15,7 @@ const SelectField: FC<Props> = memo(({name, value}) => {
     <div className={styles.container}>
       <select defaultValue='' {...register(name)} id={name} className={`${isDirty && errors[name] && styles.errorField} ${styles.field}`}>
         <option value="none" disabled hidden></option>
-        <option value="11">{value}</option>
+        <option value={value}>{value}</option>
       </select>
     </div>
   );

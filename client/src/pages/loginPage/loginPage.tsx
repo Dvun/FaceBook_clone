@@ -1,18 +1,17 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo } from 'react';
 import Login from '../../components/login/login';
 import Register from '../../components/register/Register';
+import { useAppSelector } from '../../hooks/storeHooks';
 
 
 export const LoginPage: FC = memo(() => {
-  const [register, setRegister] = useState<boolean>(false)
+  const {isOpenRegister} = useAppSelector(state => state.registerModal)
 
 
   return (
     <>
-      <Login setRegister={setRegister}/>
-      {
-        register && <Register setRegister={setRegister}/>
-      }
+      <Login/>
+      {isOpenRegister && <Register/>}
     </>
   );
 });

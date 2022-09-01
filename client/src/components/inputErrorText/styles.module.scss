@@ -40,3 +40,18 @@
     top: 13px;
   }
 }
+
+.inputErrorLastname {
+  position: absolute;
+  left: 13rem;
+  width: 300px;
+
+  .errorArrowRight {
+    border-right: 10px solid #b94a48;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    left: -10px;
+    top: 13px;
+  }
+}

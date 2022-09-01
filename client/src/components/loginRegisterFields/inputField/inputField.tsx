@@ -29,7 +29,7 @@ const InputField: FC<Props> = memo(({name, type, placeholder, bottom}) => {
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className={`${isDirty && errors[name] && styles.error}`}
+        className={`${isDirty && errors[name] && styles.error} ${isDesktop ? styles.inputDesktop : styles.inputMobile}`}
       />
 
       {isDirty && errors[name] && bottom &&
@@ -39,7 +39,7 @@ const InputField: FC<Props> = memo(({name, type, placeholder, bottom}) => {
       {isDirty && errors[name] &&
         <FontAwesomeIcon
           icon={faCircleExclamation}
-          style={{top: `${!bottom && !isDesktop ? '60%' : '15px'}`}}
+          style={{top: `${!bottom && !isDesktop && name === 'password' ? '66%' : !bottom && !isDesktop ? '62%' : ''}`}}
           color="#b94a48"
         />
       }

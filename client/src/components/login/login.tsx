@@ -1,18 +1,17 @@
 import React, { FC, memo } from 'react';
 import styles from './styles.module.scss';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import InputField from '../fields/inputField/inputField';
+import InputField from '../loginRegisterFields/inputField/inputField';
 import { Link } from 'react-router-dom';
 import { ILoginData } from '../../interfaces/interfaces';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidation } from '../../validation/validation';
+import { useAppDispatch } from '../../hooks/storeHooks';
+import { registerModalCondition } from '../../store/registerModalSlice/registerModalSlice';
 
 
-interface Props {
-  setRegister: (bool: boolean) => void
-}
-
-const Login: FC<Props> = memo(({setRegister}) => {
+const Login: FC = memo(() => {
+  const dispatch = useAppDispatch()
   const methods = useForm<ILoginData>({
     mode: 'onChange',
     defaultValues: {email: '', password: ''},
@@ -41,7 +40,7 @@ const Login: FC<Props> = memo(({setRegister}) => {
             </FormProvider>
             <Link to="/forgot">Forgotten password?</Link>
             <hr/>
-            <button className={`blue_btn ${styles.openSignup}`} onClick={() => setRegister(true)}>Create Account</button>
+            <button className={`blue_btn ${styles.openSignup}`} onClick={() => dispatch(registerModalCondition(true))}>Create Account</button>
           </div>
           <Link to="/"><b>Create a Page </b> for a celebrity, brand or business.</Link>
         </div>
