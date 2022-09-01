@@ -1,0 +1,21 @@
+
+.container {
+  width: 100%;
+
+  .field {
+    border: 1px solid var(--bg-third);
+    background-color: var(--bg-primary);
+    padding: 8px 10px;
+    border-radius: 7px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    option {
+    }
+  }
+
+  .errorField {
+    border: 1px solid #b94a48;
+  }
+}

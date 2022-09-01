@@ -1,0 +1,43 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+
+  .field {
+    border: 1px solid var(--bg-third);
+    background-color: var(--bg-primary);
+    padding: 8px 10px;
+    border-radius: 7px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    transition: all .1s ease-in;
+  }
+
+  .fieldError {
+    border: 1px solid #b94a48;
+  }
+}
+
+@media (min-width: 850px) {
+  .container {
+    width: fit-content;
+    flex-direction: row;
+
+    .field {
+      width: 140px;
+    }
+  }
+}
+
+@media (min-width: 430px) {
+  .container {
+    width: fit-content;
+
+    .field {
+      width: 140px;
+    }
+  }
+}

@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.scss';
+import AppRoutes from '../components/AppRoutes';
 
 function App() {
   return (
-    <div>
-    </div>
+    <>
+      <AppRoutes/>
+    </>
   );
 }
 

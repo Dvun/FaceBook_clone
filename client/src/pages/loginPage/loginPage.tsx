@@ -1,12 +1,18 @@
-import React, { FC, memo } from 'react';
-import styles from './styles.module.scss'
+import React, { FC, memo, useState } from 'react';
+import Login from '../../components/login/login';
+import Register from '../../components/register/Register';
 
 
 export const LoginPage: FC = memo(() => {
+  const [register, setRegister] = useState<boolean>(false)
+
 
   return (
-    <div>
-
-    </div>
+    <>
+      <Login setRegister={setRegister}/>
+      {
+        register && <Register setRegister={setRegister}/>
+      }
+    </>
   );
 });

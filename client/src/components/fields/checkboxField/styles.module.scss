@@ -1,0 +1,36 @@
+
+.container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    outline: none;
+    border: 1px solid var(--bg-third);
+    background-color: var(--bg-primary);
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding-inline-start: 10px;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    font-size: 15px;
+
+    &:focus {
+      border-color: var(--blue-color);
+    }
+  }
+
+  .error {
+    border-color: #b94a48;
+  }
+
+  svg {
+    position: absolute;
+    font-size: 20px;
+    right: 5px;
+    top: 15px;
+  }
+}

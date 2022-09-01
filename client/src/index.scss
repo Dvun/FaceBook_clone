@@ -1,21 +1,51 @@
 
-body {
-  font-family: -apple-system, Hevletica, Arial, 'sans-serif';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
 
-  html {
-    overflow-y: scroll;
+  body {
+    font-family: -apple-system, Hevletica, Arial, 'sans-serif';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    html {
+      overflow-y: scroll;
+    }
 
     a {
       text-decoration: none;
       color: inherit;
     }
+
+    .blue_btn {
+      border: none;
+      border-radius: 7px;
+      outline: none;
+      padding: 8.5px 7px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      background-color: var(--blue-color);
+    }
+
+    .blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, .768);
+      z-index: 99;
+    }
   }
 }
+
 
 :root {
   --bg-primary: #fff;
