@@ -18,7 +18,7 @@ export interface IRegisterData {
   email: string,
   password: string,
   gender: typeof Gender,
-  bYear: string,
+  bYear: number,
   bMonth: string,
-  bDay: string
+  bDay: number
 }

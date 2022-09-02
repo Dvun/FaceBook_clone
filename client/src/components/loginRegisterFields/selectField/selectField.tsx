@@ -5,17 +5,20 @@ import { useFormContext } from 'react-hook-form';
 
 interface Props {
   name: string;
-  value: string
+  values: number[] | string[]
 }
 
-const SelectField: FC<Props> = memo(({name, value}) => {
+const SelectField: FC<Props> = memo(({name, values}) => {
   const {register, formState: {errors, isDirty}} = useFormContext();
 
   return (
     <div className={styles.container}>
-      <select defaultValue='' {...register(name)} id={name} className={`${isDirty && errors[name] && styles.errorField} ${styles.field}`}>
-        <option value="none" disabled hidden></option>
-        <option value={value}>{value}</option>
+      <select {...register(name)} id={name} className={`${isDirty && errors[name] && styles.errorField} ${styles.field}`}>
+        {
+          values.map((value, index) => (
+            <option key={index} value={value}>{value}</option>
+          ))
+        }
       </select>
     </div>
   );

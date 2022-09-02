@@ -1,7 +1,7 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect } from 'react';
 import styles from './styles.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleExclamation, faCircleQuestion, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '../loginRegisterFields/inputField/inputField';
 import { Gender, IRegisterData } from '../../interfaces/interfaces';
@@ -11,10 +11,11 @@ import RadioField from '../loginRegisterFields/radioField/radioField';
 import SelectField from '../loginRegisterFields/selectField/selectField';
 import { useAppDispatch } from '../../hooks/storeHooks';
 import { registerModalCondition } from '../../store/registerModalSlice/registerModalSlice';
+import { currentMonthName, getDaysArray, getMonthNames, getMonthNumber } from '../../utils/dateFormat';
 
 
 const Register: FC = memo(() => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const methods = useForm<IRegisterData>({
     mode: 'onChange',
     resolver: yupResolver(RegisterValidation),
@@ -24,14 +25,34 @@ const Register: FC = memo(() => {
       email: '',
       password: '',
       gender: Gender,
-      bYear: '',
-      bMonth: '',
-      bDay: '',
+      bYear: new Date().getFullYear(),
+      bMonth: currentMonthName(),
+      bDay: new Date().getDate(),
     },
   });
+  const tempYear = new Date().getFullYear()
+  const years: number[] = Array.from(new Array(108), (value, index) => tempYear - index);
+  const months: number[] = Array.from(new Array(12), (value, index) => index)
+  let days: number[] = getDaysArray(methods.getValues('bYear'), methods.getValues('bMonth'), methods.getValues('bDay'))
+
+  useEffect(() => {
+    if (methods.watch('bDay') || methods.watch('bMonth') || methods.watch('bYear'))
+      days = getDaysArray(methods.getValues('bYear'), methods.getValues('bMonth'), methods.getValues('bDay'))
+  }, [methods.watch('bDay'), methods.watch('bMonth'), methods.watch('bYear')])
 
   const onSubmit: SubmitHandler<IRegisterData> = (data) => {
-    console.log(data);
+    const name = data.name.charAt(0).toUpperCase() + data.name.substring(1)
+    const lastName = data.lastName.charAt(0).toUpperCase() + data.lastName.substring(1)
+    const year: number = new Date(data.bYear).getFullYear()
+    const newUser = {
+      name: name,
+      lastName: lastName,
+      email: data.email,
+      password: data.password,
+      gender: data.gender,
+      birthday: year + '-' + getMonthNumber(data.bMonth, data.bDay, year) + '-' + data.bDay
+    }
+    console.log(newUser);
   };
 
   return (
@@ -53,7 +74,7 @@ const Register: FC = memo(() => {
               <InputField name="password" type="password" placeholder="New password" bottom={false}/>
 
               <div className={styles.genderFields}>
-                <label>Gender</label>
+                <label>Gender <FontAwesomeIcon icon={faCircleQuestion} className={styles.info}/></label>
                 {methods.formState.isDirty && methods.formState.errors['gender'] &&
                   <FontAwesomeIcon
                     icon={faCircleExclamation}
@@ -67,7 +88,7 @@ const Register: FC = memo(() => {
               </div>
 
               <div className={styles.birthdayFields}>
-                <label>Birthday</label>
+                <label>Birthday <FontAwesomeIcon icon={faCircleQuestion} className={styles.info}/></label>
                 {methods.formState.isDirty &&
                   (methods.formState.errors['bMonth'] ||
                     methods.formState.errors['bMonth'] ||
@@ -78,9 +99,9 @@ const Register: FC = memo(() => {
                   />
                 }
                 <div className={styles.birthdayFieldsWrapper}>
-                  <SelectField name="bMonth" value="11"/>
-                  <SelectField name="bDay" value="11"/>
-                  <SelectField name="bYear" value="1984"/>
+                  <SelectField name="bMonth" values={getMonthNames(months)}/>
+                  <SelectField name="bDay" values={days}/>
+                  <SelectField name="bYear" values={years}/>
                 </div>
               </div>
 

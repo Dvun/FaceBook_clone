@@ -2,7 +2,7 @@
 .inputError {
   position: relative;
   padding: 15px 10px;
-  background-color: #b94a48;
+  background-color: var(--color-warning);
   width: 100%;
   color: #ffffff;
   font-size: 13px;
@@ -10,7 +10,7 @@
   margin-bottom: 10px;
 
   .errorArrowTop {
-    border-top: 10px solid #b94a48;
+    border-top: 10px solid var(--color-warning);
     border-right: 10px solid transparent;
     border-left: 10px solid transparent;
     position: absolute;
@@ -18,7 +18,7 @@
   }
 
   .errorArrowBottom {
-    border-bottom: 10px solid #b94a48;
+    border-bottom: 10px solid var(--color-warning);
     border-right: 10px solid transparent;
     border-left: 10px solid transparent;
     position: absolute;
@@ -32,7 +32,7 @@
   width: 300px;
 
   .errorArrowLeft {
-    border-left: 10px solid #b94a48;
+    border-left: 10px solid var(--color-warning);
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     position: absolute;
@@ -47,7 +47,7 @@
   width: 300px;
 
   .errorArrowRight {
-    border-right: 10px solid #b94a48;
+    border-right: 10px solid var(--color-warning);
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     position: absolute;
