@@ -90,9 +90,9 @@ const Register: FC = memo(() => {
               <div className={styles.birthdayFields}>
                 <label>Birthday <FontAwesomeIcon icon={faCircleQuestion} className={styles.info}/></label>
                 {methods.formState.isDirty &&
-                  (methods.formState.errors['bMonth'] ||
+                  (methods.formState.errors['bYear'] ||
                     methods.formState.errors['bMonth'] ||
-                    methods.formState.errors['bMonth']) &&
+                    methods.formState.errors['bDay']) &&
                   <FontAwesomeIcon
                     icon={faCircleExclamation}
                     color="#b94a48"

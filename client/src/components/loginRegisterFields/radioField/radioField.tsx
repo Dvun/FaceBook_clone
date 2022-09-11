@@ -12,7 +12,7 @@ interface Props {
 }
 
 const RadioField: FC<Props> = memo(({name, value, label}) => {
-  const {register, formState: {errors, isDirty}} = useFormContext();
+  const {register, formState: {errors}} = useFormContext();
 
 
   return (
